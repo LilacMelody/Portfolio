@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Edit Mode Toolbar -->
+  <div id="edit-toolbar" class="edit-toolbar" style="display:none">
+    <button id="edit-toggle" class="edit-btn" title="Toggle Edit Mode">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Edit Mode
+    </button>
+    <div id="edit-actions" class="edit-actions hidden">
+      <button id="save-btn" class="action-btn save">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save
+      </button>
+      <button id="reset-btn" class="action-btn reset">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.24"/></svg>
+        Reset
+      </button>
+      <span class="edit-hint">Click any text to edit it</span>
+      <div class="color-tool" id="color-tool">
+        <button class="action-btn color-btn" id="color-btn" title="Change font color">
+          <span class="color-a-wrap">
+            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><text x="1" y="12" font-size="13" font-weight="800" font-family="Inter,sans-serif" fill="currentColor">A</text></svg>
+            <span class="color-bar" id="color-bar"></span>
+          </span>
+          Color
+        </button>
+        <div class="color-panel hidden" id="color-panel">
+          <p class="color-panel-hint" id="color-panel-hint">Select a text element first</p>
+          <div class="swatch-grid">
+            <button class="swatch" data-color="#e8e8f0" style="background:#e8e8f0" title="Light"></button>
+            <button class="swatch" data-color="#9898b0" style="background:#9898b0" title="Muted"></button>
+            <button class="swatch" data-color="#7c6af4" style="background:#7c6af4" title="Purple"></button>
+            <button class="swatch" data-color="#a78bfa" style="background:#a78bfa" title="Lavender"></button>
+            <button class="swatch" data-color="#38bdf8" style="background:#38bdf8" title="Sky Blue"></button>
+            <button class="swatch" data-color="#10b981" style="background:#10b981" title="Green"></button>
+            <button class="swatch" data-color="#f59e0b" style="background:#f59e0b" title="Amber"></button>
+            <button class="swatch" data-color="#ef4444" style="background:#ef4444" title="Red"></button>
+            <button class="swatch" data-color="#ec4899" style="background:#ec4899" title="Pink"></button>
+            <button class="swatch" data-color="#ffffff" style="background:#ffffff;border-color:#555" title="White"></button>
+          </div>
+          <div class="color-panel-footer">
+            <label class="custom-color-label" title="Pick a custom color">
+              <input type="color" id="font-color-picker" value="#7c6af4" />
+              <span>Custom</span>
+            </label>
+            <button class="color-reset-btn" id="color-reset-btn">↩ Reset</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <button id="admin-logout" class="action-btn reset" title="Log out of admin">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log out
+      </button>
+      <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+        <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav id="navbar" class="navbar">
+    <a href="#hero" class="nav-logo" data-editable="nav-name">Your Name</a>
+    <button id="admin-trigger" class="admin-trigger" title="Admin login">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero">
+    <div class="hero-bg">
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag" data-editable="hero-tag">Available for work</div>
+      <h1 class="hero-title">
+        <span class="greeting">Hi, I'm </span>
+        <span class="name-highlight" data-editable="hero-name">Alex Johnson</span>
+      </h1>
+      <p class="hero-subtitle" data-editable="hero-subtitle">Full-Stack Developer &amp; UI Designer</p>
+      <p class="hero-desc" data-editable="hero-desc">I craft beautiful digital experiences that sit at the intersection of design and technology. Passionate about clean code and pixel-perfect interfaces.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View My Work</a>
+        <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-image-wrap">
+      <div class="hero-image" id="hero-image" title="Click to change photo">
+        <img src="" alt="Profile" id="profile-img" class="profile-img hidden" />
+        <div class="hero-placeholder" id="hero-placeholder">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <span>Click to upload photo</span>
+        </div>
+      </div>
+      <input type="file" id="photo-input" accept="image/*" class="hidden" />
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-editable="about-tag">About Me</span>
+        <h2 class="section-title" data-editable="about-title">Who I Am</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p data-editable="about-p1">I'm a passionate developer with 5+ years of experience building scalable web applications. I love solving complex problems and turning ideas into elegant digital solutions.</p>
+          <p data-editable="about-p2">When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or hiking in the mountains. I believe in continuous learning and pushing the boundaries of what's possible.</p>
+          <div class="about-stats">
+            <div class="stat">
+              <span class="stat-num" data-editable="stat-projects">50+</span>
+              <span class="stat-label" data-editable="stat-projects-label">Projects</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-editable="stat-years">5+</span>
+              <span class="stat-label" data-editable="stat-years-label">Years Exp.</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-editable="stat-clients">30+</span>
+              <span class="stat-label" data-editable="stat-clients-label">Clients</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-details">
+          <div class="detail-card">
+            <div class="detail-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+              <h4 data-editable="detail1-title">Frontend Dev</h4>
+              <p data-editable="detail1-desc">React, Vue, TypeScript, CSS animations</p>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+            </div>
+            <div>
+              <h4 data-editable="detail2-title">Backend Dev</h4>
+              <p data-editable="detail2-desc">Node.js, Python, PostgreSQL, Redis</p>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div>
+              <h4 data-editable="detail3-title">UI/UX Design</h4>
+              <p data-editable="detail3-desc">Figma, design systems, accessibility</p>
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.28h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.7 16.9l.22.02z"/></svg>
+            </div>
+            <div>
+              <h4 data-editable="detail4-title">Location</h4>
+              <p data-editable="detail4-desc">San Francisco, CA (Remote-friendly)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section skills">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-editable="skills-tag">Expertise</span>
+        <h2 class="section-title" data-editable="skills-title">Skills &amp; Technologies</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3 data-editable="skill-cat1">Frontend</h3>
+          <div class="skill-bars">
+            <div class="skill-bar" data-skill="skill-react">
+              <div class="skill-info"><span data-editable="skill-react-name">React / Next.js</span><span class="skill-pct" data-editable="skill-react-pct">92</span><span>%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="--pct:92%"></div></div>
+            </div>
+            <div class="skill-bar" data-skill="skill-ts">
+              <div class="skill-info"><span data-editable="skill-ts-name">TypeScript</span><span class="skill-pct" data-editable="skill-ts-pct">88</span><span>%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="--pct:88%"></div></div>
+            </div>
+            <div class="skill-bar" data-skill="skill-css">
+              <div class="skill-info"><span data-editable="skill-css-name">CSS / Tailwind</span><span class="skill-pct" data-editable="skill-css-pct">95</span><span>%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="--pct:95%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3 data-editable="skill-cat2">Backend</h3>
+          <div class="skill-bars">
+            <div class="skill-bar" data-skill="skill-node">
+              <div class="skill-info"><span data-editable="skill-node-name">Node.js</span><span class="skill-pct" data-editable="skill-node-pct">85</span><span>%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="--pct:85%"></div></div>
+            </div>
+            <div class="skill-bar" data-skill="skill-python">
+              <div class="skill-info"><span data-editable="skill-python-name">Python</span><span class="skill-pct" data-editable="skill-python-pct">80</span><span>%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="--pct:80%"></div></div>
+            </div>
+            <div class="skill-bar" data-skill="skill-db">
+              <div class="skill-info"><span data-editable="skill-db-name">PostgreSQL</span><span class="skill-pct" data-editable="skill-db-pct">78</span><span>%</span></div>
+              <div class="bar-track"><div class="bar-fill" style="--pct:78%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-category">
+          <h3 data-editable="skill-cat3">Tools</h3>
+          <div class="skill-tags">
+            <span class="skill-tag" data-editable="tool1">Git</span>
+            <span class="skill-tag" data-editable="tool2">Docker</span>
+            <span class="skill-tag" data-editable="tool3">AWS</span>
+            <span class="skill-tag" data-editable="tool4">Figma</span>
+            <span class="skill-tag" data-editable="tool5">GraphQL</span>
+            <span class="skill-tag" data-editable="tool6">Kubernetes</span>
+            <span class="skill-tag" data-editable="tool7">CI/CD</span>
+            <span class="skill-tag" data-editable="tool8">Jest</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section projects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-editable="projects-tag">Portfolio</span>
+        <h2 class="section-title" data-editable="projects-title">Featured Projects</h2>
+      </div>
+      <div class="projects-grid">
+
+        <div class="project-card" id="project-1">
+          <div class="project-img" style="--accent:#6366f1">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="ptag" data-editable="p1-tag1">React</span>
+              <span class="ptag" data-editable="p1-tag2">Node.js</span>
+              <span class="ptag" data-editable="p1-tag3">PostgreSQL</span>
+            </div>
+            <h3 data-editable="p1-title">E-Commerce Platform</h3>
+            <p data-editable="p1-desc">A full-stack shopping platform with real-time inventory, Stripe payments, and an admin dashboard with analytics.</p>
+            <div class="project-links">
+              <a href="#" class="plink" data-editable="p1-demo" data-edit-type="href">Live Demo</a>
+              <a href="#" class="plink plink-alt" data-editable="p1-code" data-edit-type="href">Source Code</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card" id="project-2">
+          <div class="project-img" style="--accent:#10b981">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="ptag" data-editable="p2-tag1">Vue.js</span>
+              <span class="ptag" data-editable="p2-tag2">WebSockets</span>
+              <span class="ptag" data-editable="p2-tag3">Redis</span>
+            </div>
+            <h3 data-editable="p2-title">Real-Time Chat App</h3>
+            <p data-editable="p2-desc">A feature-rich messaging app with end-to-end encryption, file sharing, and video call integration via WebRTC.</p>
+            <div class="project-links">
+              <a href="#" class="plink" data-editable="p2-demo" data-edit-type="href">Live Demo</a>
+              <a href="#" class="plink plink-alt" data-editable="p2-code" data-edit-type="href">Source Code</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card" id="project-3">
+          <div class="project-img" style="--accent:#f59e0b">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="ptag" data-editable="p3-tag1">Python</span>
+              <span class="ptag" data-editable="p3-tag2">FastAPI</span>
+              <span class="ptag" data-editable="p3-tag3">ML</span>
+            </div>
+            <h3 data-editable="p3-title">AI Dashboard</h3>
+            <p data-editable="p3-desc">A machine learning dashboard for visualizing model performance, training runs, and real-time predictions with custom charts.</p>
+            <div class="project-links">
+              <a href="#" class="plink" data-editable="p3-demo" data-edit-type="href">Live Demo</a>
+              <a href="#" class="plink plink-alt" data-editable="p3-code" data-edit-type="href">Source Code</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section contact">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag" data-editable="contact-tag">Let's Talk</span>
+        <h2 class="section-title" data-editable="contact-title">Get In Touch</h2>
+        <p class="section-sub" data-editable="contact-sub">Have a project in mind or just want to say hello? My inbox is always open.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <span class="contact-label">Email</span>
+              <a href="mailto:hello@example.com" data-editable="contact-email" data-edit-type="both">hello@example.com</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <span class="contact-label">Location</span>
+              <span data-editable="contact-location">San Francisco, CA</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <span class="contact-label">Availability</span>
+              <span data-editable="contact-availability">Open to opportunities</span>
+            </div>
+          </div>
+        </div>
+        <form class="contact-form" id="contact-form">
+          <div class="form-group">
+            <input type="text" name="name" placeholder="Your Name" required />
+          </div>
+          <div class="form-group">
+            <input type="email" name="email" placeholder="Your Email" required />
+          </div>
+          <div class="form-group">
+            <input type="text" name="subject" placeholder="Subject" />
+          </div>
+          <div class="form-group">
+            <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p data-editable="footer-text">© 2026 <span data-editable="footer-name">Alex Johnson</span>. Built with passion.</p>
+    <p class="footer-sub" data-editable="footer-sub">Designed &amp; Developed by me</p>
+  </footer>
+
+  <!-- Admin Login Modal -->
+  <div id="admin-modal" class="admin-modal hidden">
+    <div class="admin-modal-overlay" id="admin-modal-overlay"></div>
+    <div class="admin-modal-box">
+      <div class="admin-lock-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h2 class="admin-modal-title">Admin Access</h2>
+      <p class="admin-modal-sub">Sign in to edit this portfolio</p>
+      <form id="admin-login-form" autocomplete="off">
+        <div class="form-group">
+          <input type="text" id="admin-username" placeholder="Username" autocomplete="username" required />
+        </div>
+        <div class="form-group">
+          <input type="password" id="admin-password" placeholder="Password" autocomplete="current-password" required />
+        </div>
+        <p class="admin-error hidden" id="admin-error">Incorrect username or password</p>
+        <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Modal (for links/complex fields) -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal-box">
+      <h3 id="modal-title">Edit Value</h3>
+      <input type="text" id="modal-input" class="modal-input" />
+      <div class="modal-actions">
+        <button id="modal-cancel" class="action-btn reset">Cancel</button>
+        <button id="modal-save" class="action-btn save">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="editor.js"></script>
+</body>
+</html>
