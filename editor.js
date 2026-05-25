@@ -507,13 +507,25 @@
   if (sessionStorage.getItem(AUTH_KEY)) showAdminUI();
   const useFirebase = initFirebase();
   if (useFirebase) {
-    firebaseRef.on('value', snapshot => {
-      currentData = snapshot.val() || {};
-      applyData(currentData);
-    });
-    firebasePhotoRef.on('value', snapshot => {
-      const src = snapshot.val();
-      if (src) applyPhoto(src);
+    firebaseRef.once('value').then(snapshot => {
+      if (!snapshot.val()) {
+        const localData = loadData();
+        if (Object.keys(localData).length > 0) {
+          firebaseRef.set(localData);
+        }
+        const localPhoto = localStorage.getItem(PHOTO_KEY);
+        if (localPhoto) {
+          firebasePhotoRef.set(localPhoto);
+        }
+      }
+      firebaseRef.on('value', s => {
+        currentData = s.val() || {};
+        applyData(currentData);
+      });
+      firebasePhotoRef.on('value', s => {
+        const src = s.val();
+        if (src) applyPhoto(src);
+      });
     });
   } else {
     currentData = loadData();
