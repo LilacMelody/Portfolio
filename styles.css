@@ -429,55 +429,6 @@ button { cursor: pointer; font-family: inherit; }
 .detail-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
 .detail-card p { font-size: 13px; color: var(--text2); }
 
-/* ===== Skills ===== */
-.skills { background: var(--bg); }
-
-.skills-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
-
-.skill-category {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px;
-}
-.skill-category h3 { font-size: 16px; font-weight: 700; margin-bottom: 24px; color: var(--accent); }
-
-.skill-bars { display: flex; flex-direction: column; gap: 20px; }
-.skill-bar {}
-.skill-info {
-  display: flex; align-items: center;
-  font-size: 13px; font-weight: 500;
-  margin-bottom: 8px;
-}
-.skill-info span:first-child { flex: 1; }
-.skill-info .skill-pct { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text2); }
-
-.bar-track {
-  height: 6px;
-  background: var(--surface2);
-  border-radius: 100px;
-  overflow: hidden;
-}
-.bar-fill {
-  height: 100%;
-  width: var(--pct);
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  border-radius: 100px;
-  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: left;
-}
-
-.skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
-.skill-tag {
-  padding: 6px 14px;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: 13px; font-weight: 500;
-  color: var(--text2);
-  transition: all var(--transition);
-}
-.skill-tag:hover { color: var(--accent); border-color: rgba(124,106,244,0.4); }
 
 /* ===== Projects ===== */
 .projects { background: var(--bg2); }
@@ -611,7 +562,6 @@ body.edit-mode [data-edit-type="href"] {
   cursor: pointer;
   outline-style: dotted;
 }
-body.edit-mode .skill-pct { cursor: pointer; outline-style: dashed; }
 
 /* ===== Modal ===== */
 .modal {
@@ -874,7 +824,7 @@ body.admin-active .hero { padding-top: calc(var(--nav-h) * 2 + 80px); }
 @media (max-width: 900px) {
   .hero { flex-direction: column; text-align: center; padding-top: calc(var(--nav-h) * 2 + 40px); }
   .hero-cta, .hero-social { justify-content: center; }
-  .about-grid, .skills-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; }
+  .about-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; }
   .hero-image { width: 240px; height: 240px; }
 }
 
