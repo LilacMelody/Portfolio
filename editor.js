@@ -9,6 +9,9 @@
   let editMode = false;
   let pendingChanges = {};
   let activeEditEl = null;
+  let currentData = {};
+  let firebaseRef = null;
+  let firebasePhotoRef = null;
 
   /* ---------- Cached DOM ---------- */
   const editToggle = document.getElementById('edit-toggle');
@@ -94,18 +97,28 @@
 
   /* ---------- Save ---------- */
   function saveData() {
-    const data = loadData();
-    const merged = Object.assign({}, data, pendingChanges);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-    pendingChanges = {};
-    showToast('Changes saved!', 'success');
+    const merged = Object.assign({}, currentData, pendingChanges);
+    if (firebaseRef) {
+      firebaseRef.set(merged)
+        .then(() => { pendingChanges = {}; showToast('Changes saved!', 'success'); })
+        .catch(() => showToast('Save failed — check Firebase config', 'error'));
+    } else {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+      pendingChanges = {};
+      showToast('Changes saved!', 'success');
+    }
   }
 
   /* ---------- Reset ---------- */
   function resetData() {
     if (!confirm('Reset all content to defaults? This cannot be undone.')) return;
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(PHOTO_KEY);
+    if (firebaseRef) {
+      firebaseRef.remove();
+      firebasePhotoRef.remove();
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(PHOTO_KEY);
+    }
     showToast('Reset to defaults', 'success');
     setTimeout(() => location.reload(), 800);
   }
@@ -300,11 +313,30 @@
     reader.onload = function (e) {
       const src = e.target.result;
       applyPhoto(src);
-      localStorage.setItem(PHOTO_KEY, src);
+      if (firebasePhotoRef) {
+        firebasePhotoRef.set(src)
+          .catch(() => localStorage.setItem(PHOTO_KEY, src));
+      } else {
+        localStorage.setItem(PHOTO_KEY, src);
+      }
       showToast('Photo updated', 'success');
     };
     reader.readAsDataURL(file);
   });
+
+  /* ---------- Firebase ---------- */
+  function initFirebase() {
+    try {
+      if (typeof FIREBASE_CONFIG === 'undefined' ||
+          !FIREBASE_CONFIG.databaseURL ||
+          FIREBASE_CONFIG.databaseURL.includes('YOUR_PROJECT')) return false;
+      firebase.initializeApp(FIREBASE_CONFIG);
+      const db = firebase.database();
+      firebaseRef = db.ref('portfolio');
+      firebasePhotoRef = db.ref('portfolio_photo');
+      return true;
+    } catch { return false; }
+  }
 
   /* ---------- Admin Auth ---------- */
   function showAdminUI() {
@@ -473,9 +505,21 @@
   /* ---------- Init ---------- */
   loadTheme();
   if (sessionStorage.getItem(AUTH_KEY)) showAdminUI();
-  const saved = loadData();
-  applyData(saved);
-  applyPhoto(localStorage.getItem(PHOTO_KEY));
+  const useFirebase = initFirebase();
+  if (useFirebase) {
+    firebaseRef.on('value', snapshot => {
+      currentData = snapshot.val() || {};
+      applyData(currentData);
+    });
+    firebasePhotoRef.on('value', snapshot => {
+      const src = snapshot.val();
+      if (src) applyPhoto(src);
+    });
+  } else {
+    currentData = loadData();
+    applyData(currentData);
+    applyPhoto(localStorage.getItem(PHOTO_KEY));
+  }
   initReveal();
   initSkillBars();
   updateActiveNav();
