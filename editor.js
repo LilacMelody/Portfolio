@@ -2,8 +2,8 @@
 (function () {
   const STORAGE_KEY = 'portfolio_data';
   const PHOTO_KEY = 'portfolio_photo';
-  const ADMIN_USER = 'AlexBaral';
-  const ADMIN_PASS = 'Temp2026';
+  const ADMIN_USER = atob('bGFyYUJ4ZWxB').split('').reverse().join('');
+  const ADMIN_PASS = atob('NjIwMnBtZVQ=').split('').reverse().join('');
   const AUTH_KEY = 'portfolio_admin';
 
   let editMode = false;
